@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { State, Users } from "../../redux/store";
 import { getUsers } from "../../redux/book/actions";
+import { paths } from "../../router";
 import "./AddressBook.scss";
 
 interface Props {
@@ -16,7 +18,12 @@ const AddressBook: React.FC<Props> = ({ users, getUsers }) => {
 
   return (
     <div className="address-book">
-      <p>Address Book</p>
+      <div className="address-book__top-bar">
+        <p className="address-book__title">Address Book</p>
+        <span className="address-book__settings-link">
+          <Link to={paths.settings}>Settings</Link>
+        </span>
+      </div>
       <table>
         <thead>
           <tr>

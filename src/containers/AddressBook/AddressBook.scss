@@ -1,3 +1,17 @@
 .address-book {
+  &__top-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
 
+  &__title {
+    flex: 1;
+    text-align: center;
+  }
+
+  &__settings-link {
+
+  }
 }
