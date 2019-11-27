@@ -6,7 +6,9 @@ import rootSaga from "./book/sagas";
 
 const sagaMiddleware = createSagaMiddleware();
 
-export type Users = ApiUser[];
+export type User = ApiUser;
+
+export type Users = User[];
 
 export interface BookState {
     users: Users;

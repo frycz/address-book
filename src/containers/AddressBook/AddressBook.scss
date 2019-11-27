@@ -1,17 +1,46 @@
 .address-book {
-  &__top-bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
+    &__top-bar {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
 
-  &__title {
-    flex: 1;
-    text-align: center;
-  }
+        position: sticky;
+        top: 0;
+        background-color: #ffffff;
+    }
 
-  &__settings-link {
+    &__title {
+        flex: 1;
+        text-align: center;
+    }
 
-  }
+    &__loader {
+        text-align: center;
+    }
+
+    &__details-modal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        right: 50%;
+        bottom: 50%;
+        width: 400px;
+        height: 250px;
+        transform: translate(-50%, -50%);
+        border-radius: 5px;
+        border: 1px solid gray;
+        padding: 10px 20px;
+        box-sizing: border-box;
+        background-color: white;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &__details-container {
+        display: flex;
+        justify-content: space-around;
+    }
 }

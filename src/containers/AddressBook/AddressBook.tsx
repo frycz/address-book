@@ -1,20 +1,38 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { State, Users } from "../../redux/store";
+import Modal from "react-modal";
+import { State, Users, User } from "../../redux/store";
 import { getUsers } from "../../redux/book/actions";
 import { paths } from "../../router";
 import "./AddressBook.scss";
 
 interface Props {
   users: Users;
+  isFetching: boolean;
   getUsers: typeof getUsers;
 }
 
-const AddressBook: React.FC<Props> = ({ users, getUsers }) => {
+const AddressBook: React.FC<Props> = ({ users, isFetching, getUsers }) => {
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
+
   useEffect(() => {
     getUsers();
   }, []);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function handleRowClick(user: User) {
+    setSelectedUser(user);
+    openModal();
+  }
 
   return (
     <div className="address-book">
@@ -37,7 +55,7 @@ const AddressBook: React.FC<Props> = ({ users, getUsers }) => {
         </thead>
         <tbody>
           {users.map((user, idx) => (
-            <tr key={user.login.username}>
+            <tr key={user.email} onClick={() => handleRowClick(user)}>
               <td>{idx + 1}</td>
               <td>
                 <img src={user.picture.thumbnail} />
@@ -50,13 +68,49 @@ const AddressBook: React.FC<Props> = ({ users, getUsers }) => {
           ))}
         </tbody>
       </table>
+      <div className="address-book__loader">
+        {isFetching ? "Loading..." : null}
+      </div>
+
+      <Modal
+        className="address-book__details-modal"
+        isOpen={modalIsOpen}
+        ariaHideApp={false}
+        onRequestClose={closeModal}
+        contentLabel="Example Modal"
+      >
+        {selectedUser && (
+          <>
+            <p>{"User Details"}</p>
+            <div className="address-book__details-container">
+              <div>
+                <img src={selectedUser.picture.medium} />
+              </div>
+              <div>
+                {`${selectedUser.name.first} ${selectedUser.name.last}`}
+                <div>{`${selectedUser.location.street.name} ${selectedUser.location.street.number}`}</div>
+                <div>{selectedUser.location.city}</div>
+                <div>{selectedUser.location.state}</div>
+                <div>{selectedUser.location.postcode}</div>
+                <div>{selectedUser.phone}</div>
+                <div>{selectedUser.cell}</div>
+              </div>
+            </div>
+
+            <div>
+              <button onClick={closeModal}>close</button>
+            </div>
+          </>
+        )}
+      </Modal>
     </div>
   );
 };
 
 export default connect(
   (state: State) => ({
-    users: state.book.users
+    users: state.book.users,
+    isFetching: state.book.isFetching
   }),
   { getUsers }
 )(AddressBook);
