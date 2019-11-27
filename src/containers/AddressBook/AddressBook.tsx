@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
-import { State, Users, User } from "../../redux/store";
+import { State, Users, User, Countries } from "../../redux/store";
 import { getUsers } from "../../redux/book/actions";
 import { paths } from "../../router";
 import "./AddressBook.scss";
@@ -10,16 +10,17 @@ import "./AddressBook.scss";
 interface Props {
   users: Users;
   isFetching: boolean;
+  countries: Countries;
   getUsers: typeof getUsers;
 }
 
-const AddressBook: React.FC<Props> = ({ users, isFetching, getUsers }) => {
+const AddressBook: React.FC<Props> = ({ users, isFetching, getUsers, countries }) => {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    getUsers(countries);
+  }, [countries]);
 
   function openModal() {
     setIsOpen(true);
@@ -51,6 +52,7 @@ const AddressBook: React.FC<Props> = ({ users, isFetching, getUsers }) => {
             <th>Last Name</th>
             <th>Username</th>
             <th>Email</th>
+            <th>!!!TMP</th>
           </tr>
         </thead>
         <tbody>
@@ -64,12 +66,14 @@ const AddressBook: React.FC<Props> = ({ users, isFetching, getUsers }) => {
               <td>{user.name.last}</td>
               <td>{user.login.username}</td>
               <td>{user.email}</td>
+              <td>{user.location.country}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div className="address-book__loader">
+      <div className="address-book__message">
         {isFetching ? "Loading..." : null}
+        {!isFetching && users.length === 0 ? "No users found" : null}
       </div>
 
       <Modal
@@ -110,7 +114,8 @@ const AddressBook: React.FC<Props> = ({ users, isFetching, getUsers }) => {
 export default connect(
   (state: State) => ({
     users: state.book.users,
-    isFetching: state.book.isFetching
+    isFetching: state.book.isFetching,
+    countries: state.book.countries,
   }),
   { getUsers }
 )(AddressBook);

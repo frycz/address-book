@@ -52,22 +52,29 @@ export interface User {
 
 interface UserApiResponse {
   results: User[];
-  info: Info;
+  info?: Info;
 }
 
-const userApiUrl =
-  "https://randomuser.me/api/?page=1&results=50&seed=sherpany&nat=ch,es,fr,gb&inc=picture,name,email,login,location,phone,cell";
+export type Countries = string[];
 
-export async function getUsers(): Promise<UserApiResponse> {
+const host = "https://randomuser.me/api/";
+
+const getUserApiUrl = (countries: Countries) =>
+  `${host}?page=1&results=50&seed=sherpany&nat=${countries.join(
+    ","
+  )}&inc=picture,name,email,login,location,phone,cell`;
+
+export async function getUsers(countries: Countries): Promise<UserApiResponse | []> {
+  if (countries.length === 0) {
+    return [];
+  }
+
   return axios
-    .get(userApiUrl)
+    .get(getUserApiUrl(countries))
     .then(response => {
-      console.log("response", response.data);
       return response.data.results;
     })
-    .catch(e => {
-      console.log(e);
-    });
+    .catch(e => e);
 }
 
 export default {
