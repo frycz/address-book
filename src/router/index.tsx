@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { batchSize, catalogueSize } from '../config'
 
 import AddressBook from "../containers/AddressBook";
 import Settings from "../containers/Settings";
@@ -13,7 +14,7 @@ const AppRouter: React.FC = () => (
   <BrowserRouter>
     <Switch>
       <Route exact path={paths.main}>
-        <AddressBook />
+        <AddressBook maxPage={catalogueSize/batchSize} />
       </Route>
       <Route exact path={paths.settings}>
         <Settings />

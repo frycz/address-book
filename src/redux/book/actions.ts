@@ -1,4 +1,4 @@
-import { Users, Countries } from "../store";
+import { User, Countries } from "./types";
 
 export const GET_USERS = "GET_USERS";
 export const GET_USERS_SUCCESS = "GET_USERS_SUCCESS";
@@ -8,11 +8,13 @@ export const UPDATE_SETTINGS = "UPDATE_SETTINGS";
 export interface GetUsersAction {
   type: typeof GET_USERS;
   countries: Countries;
+  page?: number;
 }
 
 export interface GetUsersSuccessAction {
   type: typeof GET_USERS_SUCCESS;
-  users: Users;
+  users: User[];
+  page: number;
 }
 
 export interface GetUsersErrorAction {
@@ -30,16 +32,22 @@ export type ActionTypes =
   | GetUsersErrorAction
   | UpdateSettingsAction;
 
-export const getUsers = (countries: GetUsersAction["countries"]): GetUsersAction => ({
+export const getUsers = (
+  countries: GetUsersAction["countries"],
+  page?: GetUsersAction["page"]
+): GetUsersAction => ({
   type: GET_USERS,
-  countries
+  countries,
+  page
 });
 
 export const getUsersSuccess = (
-  users: GetUsersSuccessAction["users"]
+  users: GetUsersSuccessAction["users"],
+  page: GetUsersSuccessAction["page"]
 ): GetUsersSuccessAction => ({
   type: GET_USERS_SUCCESS,
-  users
+  users,
+  page
 });
 
 export const getUsersError = (): GetUsersErrorAction => ({

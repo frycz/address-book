@@ -1,4 +1,5 @@
 import axios from "axios";
+import { batchSize } from "../config";
 
 interface Info {
   seed: string;
@@ -59,18 +60,21 @@ export type Countries = string[];
 
 const host = "https://randomuser.me/api/";
 
-const getUserApiUrl = (countries: Countries) =>
-  `${host}?page=1&results=50&seed=sherpany&nat=${countries.join(
+const getUserApiUrl = (countries: Countries, page: number) =>
+  `${host}?page=${page}&results=${batchSize}&seed=sherpany&nat=${countries.join(
     ","
   )}&inc=picture,name,email,login,location,phone,cell`;
 
-export async function getUsers(countries: Countries): Promise<UserApiResponse | []> {
+export async function getUsers(
+  countries: Countries,
+  page: number
+): Promise<UserApiResponse | []> {
   if (countries.length === 0) {
     return [];
   }
 
   return axios
-    .get(getUserApiUrl(countries))
+    .get(getUserApiUrl(countries, page))
     .then(response => {
       return response.data.results;
     })

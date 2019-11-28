@@ -2,25 +2,40 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
-import { State, Users, User, Countries } from "../../redux/store";
+import {useBottomScrollListener} from "react-bottom-scroll-listener";
+import { State, User, Countries } from "../../redux/store";
 import { getUsers } from "../../redux/book/actions";
 import { paths } from "../../router";
 import "./AddressBook.scss";
 
 interface Props {
-  users: Users;
+  users: User[];
+  maxPage: number;
   isFetching: boolean;
+  isError: boolean;
   countries: Countries;
+  currentPage: number;
   getUsers: typeof getUsers;
 }
 
-const AddressBook: React.FC<Props> = ({ users, isFetching, getUsers, countries }) => {
+const AddressBook: React.FC<Props> = ({
+  users,
+  maxPage,
+  isFetching,
+  isError,
+  getUsers,
+  countries,
+  currentPage,
+}) => {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
+  const [filter, setFilter] = React.useState("");
 
   useEffect(() => {
-    getUsers(countries);
+    getUsers(countries, 1);
   }, [countries]);
+
+  useBottomScrollListener(() => !filter && getUsers(countries));
 
   function openModal() {
     setIsOpen(true);
@@ -35,6 +50,13 @@ const AddressBook: React.FC<Props> = ({ users, isFetching, getUsers, countries }
     openModal();
   }
 
+  function handleFilterChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setFilter(e.target.value);
+  }
+
+  const filterUsers = (user: User) =>
+    user.name.first.toLowerCase().indexOf(filter.toLowerCase()) === 0;
+
   return (
     <div className="address-book">
       <div className="address-book__top-bar">
@@ -43,38 +65,50 @@ const AddressBook: React.FC<Props> = ({ users, isFetching, getUsers, countries }
           <Link to={paths.settings}>Settings</Link>
         </span>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th></th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>!!!TMP</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user, idx) => (
-            <tr key={user.email} onClick={() => handleRowClick(user)}>
-              <td>{idx + 1}</td>
-              <td>
-                <img src={user.picture.thumbnail} />
-              </td>
-              <td>{user.name.first}</td>
-              <td>{user.name.last}</td>
-              <td>{user.login.username}</td>
-              <td>{user.email}</td>
-              <td>{user.location.country}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="address-book__message">
-        {isFetching ? "Loading..." : null}
-        {!isFetching && users.length === 0 ? "No users found" : null}
+      <div>
+        Search: <input value={filter} onChange={handleFilterChange} />
       </div>
+
+          <div>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th></th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>!!!TMP</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.filter(filterUsers).map((user, idx) => (
+                  <tr key={user.email} onClick={() => handleRowClick(user)}>
+                    <td>{idx + 1}</td>
+                    <td>
+                      <img
+                        src={user.picture.thumbnail}
+                        width={48}
+                        height={48}
+                      />
+                    </td>
+                    <td>{user.name.first}</td>
+                    <td>{user.name.last}</td>
+                    <td>{user.login.username}</td>
+                    <td>{user.email}</td>
+                    <td>{user.location.country}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="address-book__message">
+              {isFetching ? "Loading..." : null}
+              {isError ? "Catalogue unavailable" : null}
+              {!isFetching && users.length === 0 ? "No users found" : null}
+              {currentPage === maxPage ? "End of user catalogue" : null}
+            </div>
+          </div>
 
       <Modal
         className="address-book__details-modal"
@@ -88,7 +122,11 @@ const AddressBook: React.FC<Props> = ({ users, isFetching, getUsers, countries }
             <p>{"User Details"}</p>
             <div className="address-book__details-container">
               <div>
-                <img src={selectedUser.picture.medium} />
+                <img
+                  src={selectedUser.picture.large}
+                  width={128}
+                  height={128}
+                />
               </div>
               <div>
                 {`${selectedUser.name.first} ${selectedUser.name.last}`}
@@ -115,7 +153,9 @@ export default connect(
   (state: State) => ({
     users: state.book.users,
     isFetching: state.book.isFetching,
+    isError: state.book.isError,
     countries: state.book.countries,
+    currentPage: state.book.currentPage,
   }),
   { getUsers }
 )(AddressBook);
