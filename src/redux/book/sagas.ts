@@ -1,5 +1,5 @@
 import { SagaIterator } from "redux-saga";
-import { takeLatest, put, all, call, select } from "redux-saga/effects";
+import { takeLeading, put, all, call, select } from "redux-saga/effects";
 import UserService, {
   User,
   Countries as ServiceCountries
@@ -22,22 +22,31 @@ const mapReduxToServiceCountries = (
 export function* getUsers(action: GetUsersAction): SagaIterator {
   const serviceCountries = mapReduxToServiceCountries(action.countries);
 
-  const currentPage = yield select(state => state.book.currentPage);
+  const displayedPage = yield select(state => state.book.currentPage);
+  console.log('getusers displayedPage', displayedPage)
+  const currentLoadedPage = yield select(state => state.book.users.length);
+  console.log('getusers currentLoadedPage', currentLoadedPage)
+
   const maxPage = catalogueSize / batchSize;
-  let nextPage = action.page || currentPage + 1;
-  nextPage = nextPage <= maxPage ? nextPage : maxPage + 1;
+  let nextLoadedPage =
+    action.page ||
+    (currentLoadedPage <= displayedPage
+      ? currentLoadedPage + 1
+      : currentLoadedPage);
+  nextLoadedPage = nextLoadedPage <= maxPage ? nextLoadedPage : maxPage + 1;
+
+  console.log('getusers nextLoadedPage', nextLoadedPage)
 
   try {
     const users: User[] =
-      nextPage <= maxPage
-        ? yield call(UserService.getUsers, serviceCountries, nextPage)
+      (nextLoadedPage === 1 || nextLoadedPage === currentLoadedPage + 1) && nextLoadedPage <= maxPage
+        ? yield call(UserService.getUsers, serviceCountries, nextLoadedPage)
         : [];
 
-    nextPage = users.length ? nextPage : maxPage;
     yield put({
       type: GET_USERS_SUCCESS,
       users,
-      page: nextPage
+      page: nextLoadedPage
     });
   } catch (err) {
     yield put({
@@ -47,5 +56,5 @@ export function* getUsers(action: GetUsersAction): SagaIterator {
 }
 
 export default function* rootSaga() {
-  yield all([takeLatest(GET_USERS, getUsers)]);
+  yield all([takeLeading(GET_USERS, getUsers)]);
 }

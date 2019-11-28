@@ -7,7 +7,7 @@ export interface Countries {
 }
 
 export interface BookState {
-  users: User[];
+  users: User[][];
   isFetching: boolean;
   isError: boolean;
   countries: Countries;

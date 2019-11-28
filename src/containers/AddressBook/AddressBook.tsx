@@ -2,20 +2,23 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
-import {useBottomScrollListener} from "react-bottom-scroll-listener";
+import { useBottomScrollListener } from "react-bottom-scroll-listener";
 import { State, User, Countries } from "../../redux/store";
-import { getUsers } from "../../redux/book/actions";
+import { getUsers, displayNextPage } from "../../redux/book/actions";
 import { paths } from "../../router";
 import "./AddressBook.scss";
 
+const IDLE_TIME = 3000;
+
 interface Props {
-  users: User[];
+  users: User[][];
   maxPage: number;
   isFetching: boolean;
   isError: boolean;
   countries: Countries;
   currentPage: number;
   getUsers: typeof getUsers;
+  displayNextPage: typeof displayNextPage;
 }
 
 const AddressBook: React.FC<Props> = ({
@@ -24,18 +27,30 @@ const AddressBook: React.FC<Props> = ({
   isFetching,
   isError,
   getUsers,
-  countries,
   currentPage,
+  displayNextPage,
+  countries
 }) => {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
   const [filter, setFilter] = React.useState("");
 
   useEffect(() => {
+    displayNextPage(); // TODO: pass page nr here
     getUsers(countries, 1);
   }, [countries]);
 
-  useBottomScrollListener(() => !filter && getUsers(countries));
+  useEffect(() => {
+    const timer = setTimeout(() => getUsers(countries), IDLE_TIME);
+    return () => clearTimeout(timer);
+  }, [users]);
+
+  useBottomScrollListener(() => {
+    if (!filter) {
+      displayNextPage();
+      getUsers(countries);
+    }
+  }, 400);
 
   function openModal() {
     setIsOpen(true);
@@ -59,57 +74,59 @@ const AddressBook: React.FC<Props> = ({
 
   return (
     <div className="address-book">
-      <div className="address-book__top-bar">
-        <p className="address-book__title">Address Book</p>
-        <span className="address-book__settings-link">
-          <Link to={paths.settings}>Settings</Link>
-        </span>
+      <div className="address-book__header">
+        <div className="address-book__top-bar">
+          <p className="address-book__title">Address Book</p>
+          <span className="address-book__settings-link">
+            <Link to={paths.settings}>Settings</Link>
+          </span>
+        </div>
+        <div className="address-book__filters">
+          Search: <input value={filter} onChange={handleFilterChange} />
+        </div>
       </div>
-      <div>
-        Search: <input value={filter} onChange={handleFilterChange} />
-      </div>
-
-          <div>
-            <table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th></th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>!!!TMP</th>
+      <div className="address-book__list">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th></th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>!!!TMP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users
+              .slice(0, currentPage)
+              .reduce((list, page) => list.concat(page), [])
+              .filter(filterUsers)
+              .map((user, idx) => (
+                <tr key={user.email} onClick={() => handleRowClick(user)}>
+                  <td>{idx + 1}</td>
+                  <td>
+                    <img src={user.picture.thumbnail} width={48} height={48} />
+                  </td>
+                  <td>{user.name.first}</td>
+                  <td>{user.name.last}</td>
+                  <td>{user.login.username}</td>
+                  <td>{user.email}</td>
+                  <td>{user.location.country}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {users.filter(filterUsers).map((user, idx) => (
-                  <tr key={user.email} onClick={() => handleRowClick(user)}>
-                    <td>{idx + 1}</td>
-                    <td>
-                      <img
-                        src={user.picture.thumbnail}
-                        width={48}
-                        height={48}
-                      />
-                    </td>
-                    <td>{user.name.first}</td>
-                    <td>{user.name.last}</td>
-                    <td>{user.login.username}</td>
-                    <td>{user.email}</td>
-                    <td>{user.location.country}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="address-book__message">
-              {isFetching ? "Loading..." : null}
-              {isError ? "Catalogue unavailable" : null}
-              {!isFetching && users.length === 0 ? "No users found" : null}
-              {currentPage === maxPage ? "End of user catalogue" : null}
-            </div>
-          </div>
-
+              ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="address-book__message">
+        {!filter && !isError && users.length !== 0 && currentPage < maxPage
+          ? "Loading..."
+          : null}
+        {isError ? "Catalogue unavailable" : null}
+        {!isFetching && users.length === 0 ? "No users found" : null}
+        {!isFetching && currentPage >= maxPage ? "End of user catalogue" : null}
+      </div>
       <Modal
         className="address-book__details-modal"
         isOpen={modalIsOpen}
@@ -155,7 +172,7 @@ export default connect(
     isFetching: state.book.isFetching,
     isError: state.book.isError,
     countries: state.book.countries,
-    currentPage: state.book.currentPage,
+    currentPage: state.book.currentPage
   }),
-  { getUsers }
+  { getUsers, displayNextPage }
 )(AddressBook);

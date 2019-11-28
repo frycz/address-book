@@ -1,13 +1,22 @@
 .address-book {
+    &__header {
+        position: sticky;
+        top: 0;
+        background-color: #ffffff;
+    }
+
     &__top-bar {
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        border-bottom: 1px solid gray;
+    }
 
-        position: sticky;
-        top: 0;
-        background-color: #ffffff;
+    &__filters {
+        padding: 20px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #ededed;
     }
 
     &__title {
@@ -18,6 +27,11 @@
     &__message {
         text-align: center;
         height: 30px;
+    }
+
+    &__list {
+        display: flex;
+        justify-content: center;;
     }
 
     &__details-modal {
