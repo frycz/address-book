@@ -75,7 +75,7 @@ const AddressBook: React.FC<Props> = ({
     if (isError) {
       return "Catalogue unavailable";
     }
-
+    // TODO: check this condition
     if (!isFetching && currentPage >= maxPage) {
       return "End of user catalogue";
     }
@@ -121,7 +121,6 @@ const AddressBook: React.FC<Props> = ({
                 <th>Last Name</th>
                 <th>Username</th>
                 <th>Email</th>
-                <th>!!!TMP</th>
               </tr>
             </thead>
             <tbody>
@@ -143,7 +142,6 @@ const AddressBook: React.FC<Props> = ({
                     <td>{user.name.last}</td>
                     <td>{user.login.username}</td>
                     <td>{user.email}</td>
-                    <td>{user.location.country}</td>
                   </tr>
                 ))}
             </tbody>
@@ -172,15 +170,14 @@ const AddressBook: React.FC<Props> = ({
               <div>
                 {`${selectedUser.name.first} ${selectedUser.name.last}`}
                 <div>{`${selectedUser.location.street.name} ${selectedUser.location.street.number}`}</div>
-                <div>{selectedUser.location.city}</div>
-                <div>{selectedUser.location.state}</div>
+                <div>{`${selectedUser.location.city}, ${selectedUser.location.state}`}</div>
                 <div>{selectedUser.location.postcode}</div>
-                <div>{selectedUser.phone}</div>
-                <div>{selectedUser.cell}</div>
+                <div>{`pho.: ${selectedUser.phone}`}</div>
+                <div>{`cell: ${selectedUser.cell}`}</div>
               </div>
             </div>
 
-            <div>
+            <div className="address-book__details-close">
               <button onClick={closeModal}>close</button>
             </div>
           </>
