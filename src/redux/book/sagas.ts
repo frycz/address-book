@@ -29,7 +29,7 @@ export function* getUsers(action: GetUsersAction): SagaIterator {
 
   const maxPage = catalogueSize / batchSize;
   let nextLoadedPage =
-    action.page ||
+    (action.reset && 1) ||
     (currentLoadedPage <= displayedPage
       ? currentLoadedPage + 1
       : currentLoadedPage);
@@ -46,7 +46,7 @@ export function* getUsers(action: GetUsersAction): SagaIterator {
     yield put({
       type: GET_USERS_SUCCESS,
       users,
-      page: nextLoadedPage
+      reset: action.reset
     });
   } catch (err) {
     yield put({

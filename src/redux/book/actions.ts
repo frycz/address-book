@@ -9,13 +9,13 @@ export const UPDATE_SETTINGS = "UPDATE_SETTINGS";
 export interface GetUsersAction {
   type: typeof GET_USERS;
   countries: Countries;
-  page?: number;
+  reset?: boolean;
 }
 
 export interface GetUsersSuccessAction {
   type: typeof GET_USERS_SUCCESS;
   users: User[];
-  page: number;
+  reset: boolean;
 }
 
 export interface GetUsersErrorAction {
@@ -24,7 +24,7 @@ export interface GetUsersErrorAction {
 
 export interface DisplayPageAction {
   type: typeof DISPLAY_PAGE;
-  page?: number;
+  reset?: boolean;
 }
 
 export interface UpdateSettingsAction {
@@ -41,29 +41,29 @@ export type ActionTypes =
 
 export const getUsers = (
   countries: GetUsersAction["countries"],
-  page?: GetUsersAction["page"]
+  reset?: GetUsersAction["reset"]
 ): GetUsersAction => ({
   type: GET_USERS,
   countries,
-  page
+  reset
 });
 
 export const getUsersSuccess = (
   users: GetUsersSuccessAction["users"],
-  page: GetUsersSuccessAction["page"]
+  reset: GetUsersSuccessAction["reset"]
 ): GetUsersSuccessAction => ({
   type: GET_USERS_SUCCESS,
   users,
-  page
+  reset
 });
 
 export const getUsersError = (): GetUsersErrorAction => ({
   type: GET_USERS_ERROR
 });
 
-export const displayPage = (page?: DisplayPageAction['page']): DisplayPageAction => ({
+export const displayPage = (reset?: DisplayPageAction['reset']): DisplayPageAction => ({
   type: DISPLAY_PAGE,
-  page,
+  reset,
 });
 
 export const updateSettings = (

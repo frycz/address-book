@@ -36,7 +36,7 @@ export default (state = initialState, action: ActionTypes): BookState => {
       return {
         ...state,
         users: action.users.length
-          ? action.page === 1
+          ? action.reset
             ? [action.users]
             : [...state.users, action.users]
           : state.users,
@@ -50,8 +50,8 @@ export default (state = initialState, action: ActionTypes): BookState => {
         isError: true
       };
     case DISPLAY_PAGE: {
-      const currentPage = action.page
-        ? action.page
+      const currentPage = action.reset
+        ? 1
         : state.currentPage <= state.users.length
         ? state.currentPage + 1
         : state.currentPage;

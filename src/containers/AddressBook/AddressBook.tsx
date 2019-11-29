@@ -34,8 +34,8 @@ const AddressBook: React.FC<Props> = ({
   const [filter, setFilter] = React.useState("");
 
   useEffect(() => {
-    displayPage(1);
-    getUsers(countries, 1);
+    displayPage(true);
+    getUsers(countries, true);
   }, [countries]);
 
   useEffect(() => {
