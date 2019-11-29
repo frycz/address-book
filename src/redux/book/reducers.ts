@@ -29,7 +29,7 @@ const appendUsersPage = (
   incomingUsers: User[],
   reset: boolean
 ) => {
-  if (!incomingUsers.length) {
+  if (!incomingUsers.length && !reset) {
     return stateUsers;
   }
   return reset ? [incomingUsers] : [...stateUsers, incomingUsers];

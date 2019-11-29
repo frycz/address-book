@@ -47,12 +47,20 @@ export function* getUsers(action: GetUsersAction): SagaIterator {
   const displayedPage = yield select(state => state.book.currentPage);
   const currentLoadedPage = yield select(state => state.book.users.length);
   const maxPage = catalogueSize / batchSize;
-  
+
   const nextLoadedPage = getNextLoadedPage(
     currentLoadedPage,
     displayedPage,
     action.reset
   );
+
+  if (action.reset) {
+    yield put({
+      type: GET_USERS_SUCCESS,
+      users: [],
+      reset: action.reset
+    });
+  }
 
   if (isNextLoadedPageValid(nextLoadedPage, currentLoadedPage, maxPage)) {
     try {
@@ -61,7 +69,6 @@ export function* getUsers(action: GetUsersAction): SagaIterator {
         serviceCountries,
         nextLoadedPage
       );
-
       yield put({
         type: GET_USERS_SUCCESS,
         users,
