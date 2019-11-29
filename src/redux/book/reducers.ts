@@ -1,5 +1,5 @@
 import { countries, Countries as CountriesSettings } from "../../config";
-import { BookState, Countries } from "./types";
+import { BookState, Countries, User } from "./types";
 import { ActionTypes, DISPLAY_PAGE } from "./actions";
 
 import {
@@ -24,6 +24,28 @@ const initialState: BookState = {
   currentPage: 0
 };
 
+const appendUsersPage = (
+  stateUsers: User[][],
+  incomingUsers: User[],
+  reset: boolean
+) =>
+  incomingUsers.length
+    ? reset
+      ? [incomingUsers]
+      : [...stateUsers, incomingUsers]
+    : stateUsers;
+
+const getNextDisplayedPage = (
+  loadedPage: number,
+  currentDisplayedPage: number,
+  reset?: boolean
+) =>
+  reset
+    ? 1
+    : currentDisplayedPage <= loadedPage
+    ? currentDisplayedPage + 1
+    : currentDisplayedPage;
+
 export default (state = initialState, action: ActionTypes): BookState => {
   switch (action.type) {
     case GET_USERS:
@@ -35,11 +57,7 @@ export default (state = initialState, action: ActionTypes): BookState => {
     case GET_USERS_SUCCESS:
       return {
         ...state,
-        users: action.users.length
-          ? action.reset
-            ? [action.users]
-            : [...state.users, action.users]
-          : state.users,
+        users: appendUsersPage(state.users, action.users, action.reset),
         isFetching: false,
         isError: false
       };
@@ -49,19 +67,15 @@ export default (state = initialState, action: ActionTypes): BookState => {
         isFetching: false,
         isError: true
       };
-    case DISPLAY_PAGE: {
-      const currentPage = action.reset
-        ? 1
-        : state.currentPage <= state.users.length
-        ? state.currentPage + 1
-        : state.currentPage;
-
-      console.log("display next page:", currentPage);
+    case DISPLAY_PAGE:
       return {
         ...state,
-        currentPage
+        currentPage: getNextDisplayedPage(
+          state.users.length,
+          state.currentPage,
+          action.reset
+        )
       };
-    }
     case UPDATE_SETTINGS:
       return {
         ...state,

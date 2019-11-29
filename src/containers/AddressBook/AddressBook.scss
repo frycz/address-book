@@ -1,18 +1,25 @@
+$page-width: 1024px;
+
 .address-book {
     &__header {
+        display: flex;
+        justify-content: center;
         position: sticky;
         top: 0;
         background-color: #ffffff;
+        border-bottom: 1px solid gray;
+        margin-bottom: 20px;
+        
     }
 
     &__top-bar {
+        width: $page-width;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid gray;
         padding: 15px 20px;
-        margin-bottom: 20px;
+        
     }
 
     &__search {
@@ -32,7 +39,7 @@
     }
 
     &__table {
-        width: 1024px;
+        width: $page-width;
         text-align: left;
         border-spacing: 0;
 
