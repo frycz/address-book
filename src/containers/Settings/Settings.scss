@@ -1,0 +1,8 @@
+.settings {
+    display: flex;
+    justify-content: center;
+
+    &__title, &__back-link {
+        text-align: center;
+    }
+}

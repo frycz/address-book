@@ -67,74 +67,90 @@ const AddressBook: React.FC<Props> = ({
   }
 
   const filterUsers = (user: User) =>
-    user.name.first.toLowerCase().indexOf(filter.toLowerCase()) === 0;
+    `${user.name.first.toLowerCase()} ${user.name.last.toLowerCase()}`.indexOf(
+      filter.toLowerCase()
+    ) === 0;
 
-    function displayMessage() {
-      if (isError) {
-        return "Catalogue unavailable";
-      }
-
-      if (!isFetching && currentPage >= maxPage) {
-        return "End of user catalogue";
-      }
-
-      if (!isFetching && users.length === 0 && currentPage > 0) {
-        return "No users found";
-      }
-      // TODO: check this condition
-      if (!filter && !isError && currentPage < maxPage && (users.length !== 0 || isFetching)) {
-        return "Loading...";
-      }
+  function displayMessage() {
+    if (isError) {
+      return "Catalogue unavailable";
     }
-    
+
+    if (!isFetching && currentPage >= maxPage) {
+      return "End of user catalogue";
+    }
+
+    if (!isFetching && users.length === 0 && currentPage > 0) {
+      return "No users found";
+    }
+    // TODO: check this condition
+    if (
+      !filter &&
+      !isError &&
+      currentPage < maxPage &&
+      (users.length !== 0 || isFetching)
+    ) {
+      return "Loading...";
+    }
+  }
+
   return (
     <div className="address-book">
       <div className="address-book__header">
         <div className="address-book__top-bar">
           <span>Address Book</span>
-          <input className="address-book__search" value={filter} onChange={handleFilterChange} placeholder="Search..." />
+          <input
+            className="address-book__search"
+            value={filter}
+            onChange={handleFilterChange}
+            placeholder="Search..."
+          />
           <span className="address-book__settings-link">
             <Link to={paths.settings}>Settings</Link>
           </span>
         </div>
       </div>
       <div className="address-book__list">
-        {users.length ? (<table className="address-book__table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th></th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Username</th>
-              <th>Email</th>
-              <th>!!!TMP</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users
-              .slice(0, currentPage)
-              .reduce((list, page) => list.concat(page), [])
-              .filter(filterUsers)
-              .map((user, idx) => (
-                <tr key={user.email} onClick={() => handleRowClick(user)}>
-                  <td>{idx + 1}</td>
-                  <td>
-                    <img src={user.picture.thumbnail} width={48} height={48} />
-                  </td>
-                  <td>{user.name.first}</td>
-                  <td>{user.name.last}</td>
-                  <td>{user.login.username}</td>
-                  <td>{user.email}</td>
-                  <td>{user.location.country}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>) : null}
+        {users.length ? (
+          <table className="address-book__table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th></th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>!!!TMP</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users
+                .slice(0, currentPage)
+                .reduce((list, page) => list.concat(page), [])
+                .filter(filterUsers)
+                .map((user, idx) => (
+                  <tr key={user.email} onClick={() => handleRowClick(user)}>
+                    <td>{idx + 1}</td>
+                    <td>
+                      <img
+                        src={user.picture.thumbnail}
+                        width={48}
+                        height={48}
+                      />
+                    </td>
+                    <td>{user.name.first}</td>
+                    <td>{user.name.last}</td>
+                    <td>{user.login.username}</td>
+                    <td>{user.email}</td>
+                    <td>{user.location.country}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        ) : null}
       </div>
-      <div className="address-book__message">
-        {displayMessage()}
-      </div>
+      <div className="address-book__message">{displayMessage()}</div>
       <Modal
         className="address-book__details-modal"
         isOpen={modalIsOpen}
