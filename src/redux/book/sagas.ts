@@ -19,39 +19,59 @@ const mapReduxToServiceCountries = (
   }, serviceCountries);
 };
 
+const getNextLoadedPage = (
+  currentLoadedPage: number,
+  displayedPage: number,
+  reset?: boolean
+) => {
+  if (reset) {
+    return 1;
+  }
+
+  return currentLoadedPage <= displayedPage
+    ? currentLoadedPage + 1
+    : currentLoadedPage;
+};
+
+const isNextLoadedPageValid = (
+  nextLoadedPage: number,
+  currentLoadedPage: number,
+  maxPage: number
+) =>
+  (nextLoadedPage === 1 || nextLoadedPage === currentLoadedPage + 1) &&
+  nextLoadedPage <= maxPage;
+
 export function* getUsers(action: GetUsersAction): SagaIterator {
   const serviceCountries = mapReduxToServiceCountries(action.countries);
 
   const displayedPage = yield select(state => state.book.currentPage);
-  console.log('getusers displayedPage', displayedPage)
   const currentLoadedPage = yield select(state => state.book.users.length);
-  console.log('getusers currentLoadedPage', currentLoadedPage)
-
   const maxPage = catalogueSize / batchSize;
-  let nextLoadedPage =
-    (action.reset && 1) ||
-    (currentLoadedPage <= displayedPage
-      ? currentLoadedPage + 1
-      : currentLoadedPage);
-  nextLoadedPage = nextLoadedPage <= maxPage ? nextLoadedPage : maxPage + 1;
+  
+  const nextLoadedPage = getNextLoadedPage(
+    currentLoadedPage,
+    displayedPage,
+    action.reset
+  );
 
-  console.log('getusers nextLoadedPage', nextLoadedPage)
+  if (isNextLoadedPageValid(nextLoadedPage, currentLoadedPage, maxPage)) {
+    try {
+      const users: User[] = yield call(
+        UserService.getUsers,
+        serviceCountries,
+        nextLoadedPage
+      );
 
-  try {
-    const users: User[] =
-      (nextLoadedPage === 1 || nextLoadedPage === currentLoadedPage + 1) && nextLoadedPage <= maxPage
-        ? yield call(UserService.getUsers, serviceCountries, nextLoadedPage)
-        : [];
-
-    yield put({
-      type: GET_USERS_SUCCESS,
-      users,
-      reset: action.reset
-    });
-  } catch (err) {
-    yield put({
-      type: GET_USERS_ERROR
-    });
+      yield put({
+        type: GET_USERS_SUCCESS,
+        users,
+        reset: action.reset
+      });
+    } catch (err) {
+      yield put({
+        type: GET_USERS_ERROR
+      });
+    }
   }
 }
 
