@@ -1,27 +1,30 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import { batchSize, catalogueSize } from '../config'
+import { batchSize, catalogueSize } from "../config";
+import Loader from '../containers/Loader';
 
-import AddressBook from "../containers/AddressBook";
-import Settings from "../containers/Settings";
+const AddressBook = React.lazy(() => import("../containers/AddressBook"));
+const Settings = React.lazy(() => import("../containers/Settings"));
 
-export const paths: {[key: string]: string} = {
-  main: '/',
-  settings: '/settings'
-}
+export const paths: { [key: string]: string } = {
+  main: "/",
+  settings: "/settings"
+};
 
 const AppRouter: React.FC = () => (
   <BrowserRouter>
     <Switch>
-      <Route exact path={paths.main}>
-        <AddressBook maxPage={catalogueSize/batchSize} />
-      </Route>
-      <Route exact path={paths.settings}>
-        <Settings />
-      </Route>
-      <Route path="*">
-        <Redirect to={paths.main} />
-      </Route>
+      <React.Suspense fallback={<Loader />}>
+        <Route exact path={paths.main}>
+          <AddressBook maxPage={catalogueSize / batchSize} />
+        </Route>
+        <Route exact path={paths.settings}>
+          <Settings />
+        </Route>
+        <Route path="*">
+          <Redirect to={paths.main} />
+        </Route>
+      </React.Suspense>
     </Switch>
   </BrowserRouter>
 );
