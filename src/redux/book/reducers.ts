@@ -28,23 +28,23 @@ const appendUsersPage = (
   stateUsers: User[][],
   incomingUsers: User[],
   reset: boolean
-) =>
-  incomingUsers.length
-    ? reset
-      ? [incomingUsers]
-      : [...stateUsers, incomingUsers]
-    : stateUsers;
-
-const getNextDisplayedPage = (
+) => {
+  if (!incomingUsers.length) {
+    return stateUsers;
+  }
+  return reset ? [incomingUsers] : [...stateUsers, incomingUsers];
+};
+const getNextPage = (
   loadedPage: number,
-  currentDisplayedPage: number,
+  currentPage: number,
   reset?: boolean
-) =>
-  reset
-    ? 1
-    : currentDisplayedPage <= loadedPage
-    ? currentDisplayedPage + 1
-    : currentDisplayedPage;
+) => {
+  if (reset) {
+    return 1;
+  }
+
+  return currentPage <= loadedPage ? currentPage + 1 : currentPage;
+};
 
 export default (state = initialState, action: ActionTypes): BookState => {
   switch (action.type) {
@@ -70,7 +70,7 @@ export default (state = initialState, action: ActionTypes): BookState => {
     case DISPLAY_PAGE:
       return {
         ...state,
-        currentPage: getNextDisplayedPage(
+        currentPage: getNextPage(
           state.users.length,
           state.currentPage,
           action.reset
