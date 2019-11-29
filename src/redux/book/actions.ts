@@ -3,7 +3,7 @@ import { User, Countries } from "./types";
 export const GET_USERS = "GET_USERS";
 export const GET_USERS_SUCCESS = "GET_USERS_SUCCESS";
 export const GET_USERS_ERROR = "GET_USERS_ERROR";
-export const DISPLAY_NEXT_PAGE = "DISPLAY_NEXT_PAGE";
+export const DISPLAY_PAGE = "DISPLAY_PAGE";
 export const UPDATE_SETTINGS = "UPDATE_SETTINGS";
 
 export interface GetUsersAction {
@@ -22,8 +22,9 @@ export interface GetUsersErrorAction {
   type: typeof GET_USERS_ERROR;
 }
 
-export interface DisplayNextPageAction {
-  type: typeof DISPLAY_NEXT_PAGE;
+export interface DisplayPageAction {
+  type: typeof DISPLAY_PAGE;
+  page?: number;
 }
 
 export interface UpdateSettingsAction {
@@ -35,7 +36,7 @@ export type ActionTypes =
   | GetUsersAction
   | GetUsersSuccessAction
   | GetUsersErrorAction
-  | DisplayNextPageAction
+  | DisplayPageAction
   | UpdateSettingsAction;
 
 export const getUsers = (
@@ -60,8 +61,9 @@ export const getUsersError = (): GetUsersErrorAction => ({
   type: GET_USERS_ERROR
 });
 
-export const displayNextPage = (): DisplayNextPageAction => ({
-  type: DISPLAY_NEXT_PAGE
+export const displayPage = (page?: DisplayPageAction['page']): DisplayPageAction => ({
+  type: DISPLAY_PAGE,
+  page,
 });
 
 export const updateSettings = (

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import { useBottomScrollListener } from "react-bottom-scroll-listener";
 import { State, User, Countries } from "../../redux/store";
-import { getUsers, displayNextPage } from "../../redux/book/actions";
+import { getUsers, displayPage } from "../../redux/book/actions";
 import { paths } from "../../router";
 import "./AddressBook.scss";
 
@@ -16,7 +16,7 @@ interface Props {
   countries: Countries;
   currentPage: number;
   getUsers: typeof getUsers;
-  displayNextPage: typeof displayNextPage;
+  displayPage: typeof displayPage;
 }
 
 const AddressBook: React.FC<Props> = ({
@@ -26,7 +26,7 @@ const AddressBook: React.FC<Props> = ({
   isError,
   getUsers,
   currentPage,
-  displayNextPage,
+  displayPage,
   countries
 }) => {
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -34,7 +34,7 @@ const AddressBook: React.FC<Props> = ({
   const [filter, setFilter] = React.useState("");
 
   useEffect(() => {
-    displayNextPage(); // TODO: pass page nr here
+    displayPage(1);
     getUsers(countries, 1);
   }, [countries]);
 
@@ -44,7 +44,7 @@ const AddressBook: React.FC<Props> = ({
 
   useBottomScrollListener(() => {
     if (!filter) {
-      displayNextPage();
+      displayPage();
       getUsers(countries);
     }
   }, 400);
@@ -81,8 +81,8 @@ const AddressBook: React.FC<Props> = ({
       if (!isFetching && users.length === 0 && currentPage > 0) {
         return "No users found";
       }
-
-      if (!filter && !isError && (users.length !== 0 || isFetching) && currentPage < maxPage) {
+      // TODO: check this condition
+      if (!filter && !isError && currentPage < maxPage && (users.length !== 0 || isFetching)) {
         return "Loading...";
       }
     }
@@ -182,5 +182,5 @@ export default connect(
     countries: state.book.countries,
     currentPage: state.book.currentPage
   }),
-  { getUsers, displayNextPage }
+  { getUsers, displayPage }
 )(AddressBook);

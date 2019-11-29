@@ -1,6 +1,6 @@
 import { countries, Countries as CountriesSettings } from "../../config";
 import { BookState, Countries } from "./types";
-import { ActionTypes, DISPLAY_NEXT_PAGE } from "./actions";
+import { ActionTypes, DISPLAY_PAGE } from "./actions";
 
 import {
   GET_USERS,
@@ -49,15 +49,17 @@ export default (state = initialState, action: ActionTypes): BookState => {
         isFetching: false,
         isError: true
       };
-    case DISPLAY_NEXT_PAGE: {
-      const currentPage = state.currentPage <= state.users.length
-      ? state.currentPage + 1
-      : state.currentPage
-      console.log('display next page:', currentPage)
+    case DISPLAY_PAGE: {
+      const currentPage = action.page
+        ? action.page
+        : state.currentPage <= state.users.length
+        ? state.currentPage + 1
+        : state.currentPage;
+
+      console.log("display next page:", currentPage);
       return {
         ...state,
-        currentPage,
-          
+        currentPage
       };
     }
     case UPDATE_SETTINGS:
