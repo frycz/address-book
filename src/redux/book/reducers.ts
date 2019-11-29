@@ -21,7 +21,7 @@ const initialState: BookState = {
   isFetching: false,
   isError: false,
   countries: mapSettingsToState(countries),
-  currentPage: 1
+  currentPage: 0
 };
 
 export default (state = initialState, action: ActionTypes): BookState => {

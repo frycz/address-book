@@ -8,8 +8,6 @@ import { getUsers, displayNextPage } from "../../redux/book/actions";
 import { paths } from "../../router";
 import "./AddressBook.scss";
 
-const IDLE_TIME = 3000;
-
 interface Props {
   users: User[][];
   maxPage: number;
@@ -41,8 +39,7 @@ const AddressBook: React.FC<Props> = ({
   }, [countries]);
 
   useEffect(() => {
-    const timer = setTimeout(() => getUsers(countries), IDLE_TIME);
-    return () => clearTimeout(timer);
+    getUsers(countries);
   }, [users]);
 
   useBottomScrollListener(() => {
@@ -72,21 +69,37 @@ const AddressBook: React.FC<Props> = ({
   const filterUsers = (user: User) =>
     user.name.first.toLowerCase().indexOf(filter.toLowerCase()) === 0;
 
+    function displayMessage() {
+      if (isError) {
+        return "Catalogue unavailable";
+      }
+
+      if (!isFetching && currentPage >= maxPage) {
+        return "End of user catalogue";
+      }
+
+      if (!isFetching && users.length === 0 && currentPage > 0) {
+        return "No users found";
+      }
+
+      if (!filter && !isError && (users.length !== 0 || isFetching) && currentPage < maxPage) {
+        return "Loading...";
+      }
+    }
+    
   return (
     <div className="address-book">
       <div className="address-book__header">
         <div className="address-book__top-bar">
-          <p className="address-book__title">Address Book</p>
+          <span>Address Book</span>
+          <input className="address-book__search" value={filter} onChange={handleFilterChange} placeholder="Search..." />
           <span className="address-book__settings-link">
             <Link to={paths.settings}>Settings</Link>
           </span>
         </div>
-        <div className="address-book__filters">
-          Search: <input value={filter} onChange={handleFilterChange} />
-        </div>
       </div>
       <div className="address-book__list">
-        <table>
+        {users.length ? (<table className="address-book__table">
           <thead>
             <tr>
               <th>#</th>
@@ -117,15 +130,10 @@ const AddressBook: React.FC<Props> = ({
                 </tr>
               ))}
           </tbody>
-        </table>
+        </table>) : null}
       </div>
       <div className="address-book__message">
-        {!filter && !isError && users.length !== 0 && currentPage < maxPage
-          ? "Loading..."
-          : null}
-        {isError ? "Catalogue unavailable" : null}
-        {!isFetching && users.length === 0 ? "No users found" : null}
-        {!isFetching && currentPage >= maxPage ? "End of user catalogue" : null}
+        {displayMessage()}
       </div>
       <Modal
         className="address-book__details-modal"

@@ -8,20 +8,17 @@
     &__top-bar {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid gray;
+        padding: 15px 20px;
+        margin-bottom: 20px;
     }
 
-    &__filters {
-        padding: 20px;
-        margin-bottom: 15px;
-        border-bottom: 1px solid #ededed;
-    }
-
-    &__title {
-        flex: 1;
-        text-align: center;
+    &__search {
+        font-size: 14px;
+        width: 300px;
+        padding: 5px;
     }
 
     &__message {
@@ -31,7 +28,12 @@
 
     &__list {
         display: flex;
-        justify-content: center;;
+        justify-content: center;
+    }
+
+    &__table {
+        width: 1024px;
+        text-align: left;
     }
 
     &__details-modal {
