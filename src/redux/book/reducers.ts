@@ -16,7 +16,7 @@ const mapSettingsToState = (countries: CountriesSettings) => {
   }, {} as Countries);
 };
 
-const initialState: BookState = {
+export const initialState: BookState = {
   users: [],
   isFetching: false,
   isError: false,
