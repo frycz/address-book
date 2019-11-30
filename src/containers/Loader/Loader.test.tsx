@@ -1,9 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Loader from './Loader';
+import React from "react";
+import { shallow } from "enzyme";
+import { Loader } from "./Loader";
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<Loader />, div);
-  ReactDOM.unmountComponentAtNode(div);
+describe("Loader", () => {
+  it("should match smapshot", () => {
+    const loader = shallow(<Loader />);
+    expect(loader.debug()).toMatchSnapshot();
+  });
 });

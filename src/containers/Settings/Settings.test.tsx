@@ -1,9 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Settings from './Settings';
+import React from "react";
+import { shallow } from "enzyme";
+import { Settings, Props } from "./Settings";
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<Settings />, div);
-  ReactDOM.unmountComponentAtNode(div);
+const mockProps: Props = {
+  initialCountries: { ch: true, es: true, fr: false },
+  updateSettings: jest.fn()
+};
+
+describe("Settings", () => {
+  const settings = shallow(<Settings {...mockProps} />);
+
+  it("should match smapshot", () => {
+    expect(settings.debug()).toMatchSnapshot();
+  });
+
+  it("should render countries checkboxes", () => {
+    expect(settings.find('input[type="checkbox"]')).toHaveLength(3);
+  });
+
+  it("should render countries checkboxes", () => {
+    expect(settings.find('#settings-ch').props().checked).toEqual(true);
+  });
+
+  it("should render countries checkboxes", () => {
+    expect(settings.find('#settings-es').props().checked).toEqual(true);
+  });
+
+  it("should render countries checkboxes", () => {
+    expect(settings.find('#settings-fr').props().checked).toEqual(false);
+  });
 });

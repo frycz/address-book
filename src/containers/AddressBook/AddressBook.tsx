@@ -8,7 +8,7 @@ import { getUsers, displayPage } from "../../redux/book/actions";
 import { paths } from "../../router";
 import "./AddressBook.scss";
 
-interface Props {
+export interface Props {
   users: User[][];
   maxPage: number;
   isFetching: boolean;
@@ -19,7 +19,12 @@ interface Props {
   displayPage: typeof displayPage;
 }
 
-const AddressBook: React.FC<Props> = ({
+/**
+ * Main component for displaying address book
+ * 
+ * @param {Props} props 
+ */
+export const AddressBook: React.FC<Props> = ({
   users,
   maxPage,
   isFetching,
@@ -28,7 +33,7 @@ const AddressBook: React.FC<Props> = ({
   currentPage,
   displayPage,
   countries
-}) => {
+}: Props) => {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
   const [filter, setFilter] = React.useState("");
@@ -66,10 +71,10 @@ const AddressBook: React.FC<Props> = ({
     setFilter(e.target.value);
   }
 
-  const filterUsers = (user: User) =>
-    `${user.name.first.toLowerCase()} ${user.name.last.toLowerCase()}`.indexOf(
+  const filterUsers = (user: User) => {
+    return `${user.name.first.toLowerCase()} ${user.name.last.toLowerCase()}`.indexOf(
       filter.toLowerCase()
-    ) === 0;
+    ) === 0;}
 
   function displayMessage() {
     if (isError) {
@@ -149,6 +154,7 @@ const AddressBook: React.FC<Props> = ({
         ) : null}
       </div>
       <div className="address-book__message">{displayMessage()}</div>
+      {/* TODO: add refresh button */}
       <Modal
         className="address-book__details-modal"
         isOpen={modalIsOpen}

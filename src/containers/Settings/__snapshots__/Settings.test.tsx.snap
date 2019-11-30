@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Settings should match smapshot 1`] = `
+"<div className=\\"settings\\">
+  <div className=\\"settings__container\\">
+    <p className=\\"settings__title\\">
+      Settings
+    </p>
+    <div>
+      <input id=\\"settings-ch\\" type=\\"checkbox\\" name=\\"ch\\" checked={true} onChange={[Function: handleChange]} />
+      <label htmlFor=\\"settings-ch\\">
+        CH
+      </label>
+    </div>
+    <div>
+      <input id=\\"settings-es\\" type=\\"checkbox\\" name=\\"es\\" checked={true} onChange={[Function: handleChange]} />
+      <label htmlFor=\\"settings-es\\">
+        ES
+      </label>
+    </div>
+    <div>
+      <input id=\\"settings-fr\\" type=\\"checkbox\\" name=\\"fr\\" checked={false} onChange={[Function: handleChange]} />
+      <label htmlFor=\\"settings-fr\\">
+        FR
+      </label>
+    </div>
+    <p className=\\"settings__back-link\\">
+      <Link to=\\"/\\">
+        Back to list
+      </Link>
+    </p>
+  </div>
+</div>"
+`;

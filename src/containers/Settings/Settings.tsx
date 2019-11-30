@@ -8,12 +8,12 @@ import { updateSettings } from "../../redux/book/actions";
 
 import "./Settings.scss";
 
-interface Props {
+export interface Props {
   initialCountries: Countries;
   updateSettings: typeof updateSettings;
 }
 
-const Settings: React.FC<Props> = ({ initialCountries, updateSettings }) => {
+export const Settings: React.FC<Props> = ({ initialCountries, updateSettings }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     updateSettings({

@@ -2,7 +2,10 @@ import React from "react";
 
 import "./Loader.scss";
 
-const Loader: React.FC = () => (
+/**
+ * Loader displayed when lazy modules are fetched
+ */
+export const Loader: React.FC = () => (
   <div className="loader-box">
     Loading...
   </div>

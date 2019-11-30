@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddressBook should match smapshot 1`] = `
+"<div className=\\"address-book\\">
+  <div className=\\"address-book__header\\">
+    <div className=\\"address-book__top-bar\\">
+      <span>
+        Address Book
+      </span>
+      <input className=\\"address-book__search\\" value=\\"\\" onChange={[Function: handleFilterChange]} placeholder=\\"Search...\\" />
+      <span className=\\"address-book__settings-link\\">
+        <Link to=\\"/settings\\">
+          Settings
+        </Link>
+      </span>
+    </div>
+  </div>
+  <div className=\\"address-book__list\\">
+    <table className=\\"address-book__table\\">
+      <thead>
+        <tr>
+          <th>
+            #
+          </th>
+          <th />
+          <th>
+            First Name
+          </th>
+          <th>
+            Last Name
+          </th>
+          <th>
+            Username
+          </th>
+          <th>
+            Email
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr onClick={[Function: onClick]}>
+          <td>
+            1
+          </td>
+          <td>
+            <img src=\\"https://randomuser.me/api/portraits/thumb/men/92.jpg\\" width={48} height={48} />
+          </td>
+          <td>
+            Andres
+          </td>
+          <td>
+            Marchand
+          </td>
+          <td>
+            reddog219
+          </td>
+          <td>
+            andres.marchand@example.com
+          </td>
+        </tr>
+        <tr onClick={[Function: onClick]}>
+          <td>
+            2
+          </td>
+          <td>
+            <img src=\\"https://randomuser.me/api/portraits/thumb/men/65.jpg\\" width={48} height={48} />
+          </td>
+          <td>
+            Jaime
+          </td>
+          <td>
+            Ramirez
+          </td>
+          <td>
+            whitemouse568
+          </td>
+          <td>
+            jaime.ramirez@example.com
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div className=\\"address-book__message\\">
+    Loading...
+  </div>
+  <Modal className=\\"address-book__details-modal\\" isOpen={false} ariaHideApp={false} onRequestClose={[Function: closeModal]} contentLabel=\\"Example Modal\\" portalClassName=\\"ReactModalPortal\\" bodyOpenClassName=\\"ReactModal__Body--open\\" role=\\"dialog\\" closeTimeoutMS={0} shouldFocusAfterRender={true} shouldCloseOnEsc={true} shouldCloseOnOverlayClick={true} shouldReturnFocusAfterClose={true} parentSelector={[Function: parentSelector]} />
+</div>"
+`;

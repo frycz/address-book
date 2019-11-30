@@ -73,12 +73,9 @@ export async function getUsers(
     return [];
   }
 
-  return axios
-    .get(getUserApiUrl(countries, page))
-    .then(response => {
-      return response.data.results;
-    })
-    .catch(e => e);
+  return axios.get(getUserApiUrl(countries, page)).then(response => {
+    return response.data.results;
+  });
 }
 
 export default {
