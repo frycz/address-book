@@ -130,7 +130,7 @@ export const AddressBook: React.FC<Props> = ({
             </thead>
             <tbody>
               {users
-                .slice(0, currentPage)
+                .slice(0, Math.min(currentPage, maxPage))
                 .reduce((list, page) => list.concat(page), [])
                 .filter(filterUsers)
                 .map((user, idx) => (

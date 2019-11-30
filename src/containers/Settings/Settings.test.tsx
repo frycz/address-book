@@ -18,15 +18,15 @@ describe("Settings", () => {
     expect(settings.find('input[type="checkbox"]')).toHaveLength(3);
   });
 
-  it("should render countries checkboxes", () => {
+  it("should check ch", () => {
     expect(settings.find('#settings-ch').props().checked).toEqual(true);
   });
 
-  it("should render countries checkboxes", () => {
+  it("should render check es", () => {
     expect(settings.find('#settings-es').props().checked).toEqual(true);
   });
 
-  it("should render countries checkboxes", () => {
+  it("should not check fr", () => {
     expect(settings.find('#settings-fr').props().checked).toEqual(false);
   });
 });
