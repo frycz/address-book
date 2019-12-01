@@ -1,0 +1,1 @@
+{"version":3,"sources":["Settings.scss"],"names":[],"mappings":"AAAA,UACI,YAAa,CACb,sBAAuB,CAEvB,sCACI,iBAAkB","file":"5.25fbca42.chunk.css","sourcesContent":[".settings {\n    display: flex;\n    justify-content: center;\n\n    &__title, &__back-link {\n        text-align: center;\n    }\n}\n"]}
