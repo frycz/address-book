@@ -8,7 +8,7 @@ const state: State = {
     isFetching: false,
     isError: false,
     countries: countriesState,
-    currentPage: 1
+    displayedPage: 1
   }
 };
 

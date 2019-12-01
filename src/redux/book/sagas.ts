@@ -3,7 +3,7 @@ import { takeLeading, put, all, call, select } from "redux-saga/effects";
 import UserService, { User } from "../../services/userService";
 import { batchSize, catalogueSize } from "../../config";
 import { GetUsersAction } from "./actions";
-import { getCurrentPage, getLoadedPage } from "./selectors";
+import { getDisplayedPage, getLoadedPage } from "./selectors";
 import {
   mapReduxToServiceCountries,
   getNextLoadedPage,
@@ -14,7 +14,7 @@ import { GET_USERS, GET_USERS_SUCCESS, GET_USERS_ERROR } from "./actions";
 export function* getUsers(action: GetUsersAction): SagaIterator {
   const serviceCountries = mapReduxToServiceCountries(action.countries);
 
-  const displayedPage = yield select(getCurrentPage);
+  const displayedPage = yield select(getDisplayedPage);
   const currentLoadedPage = yield select(getLoadedPage);
   const maxPage = catalogueSize / batchSize;
 

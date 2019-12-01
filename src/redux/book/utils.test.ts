@@ -1,7 +1,7 @@
 import {
   mapSettingsToState,
   appendUsersPage,
-  getNextPage,
+  getNextDisplayedPage,
   mapReduxToServiceCountries,
   getNextLoadedPage,
   isNextLoadedPageValid
@@ -29,19 +29,19 @@ describe("Redux utils", () => {
   });
 
   it("should increment next page when pages are qual", () => {
-    expect(getNextPage(3, 3)).toEqual(4);
+    expect(getNextDisplayedPage(3, 3)).toEqual(4);
   });
 
   it("should increment next page when there is more loaded pages", () => {
-    expect(getNextPage(4, 3)).toEqual(4);
+    expect(getNextDisplayedPage(4, 3)).toEqual(4);
   });
 
   it("should not increment next page", () => {
-    expect(getNextPage(3, 4)).toEqual(4);
+    expect(getNextDisplayedPage(3, 4)).toEqual(4);
   });
 
   it("should reset page to 1", () => {
-    expect(getNextPage(3, 4, true)).toEqual(1);
+    expect(getNextDisplayedPage(3, 4, true)).toEqual(1);
   });
 
   it("should map state countries to api service countries", () => {

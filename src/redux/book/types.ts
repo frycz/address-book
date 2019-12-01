@@ -11,5 +11,5 @@ export interface BookState {
   isFetching: boolean;
   isError: boolean;
   countries: Countries;
-  currentPage: number;
+  displayedPage: number;
 }

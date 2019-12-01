@@ -1,7 +1,7 @@
 import { testSaga } from "redux-saga-test-plan";
 import { getUsers as getUsersService } from "../../services/userService";
 import { getUsers as getUsersSaga } from "./sagas";
-import { getCurrentPage, getLoadedPage } from './selectors';
+import { getDisplayedPage, getLoadedPage } from './selectors';
 import { GET_USERS, getUsersSuccess, getUsersError } from "./actions";
 import { Countries as CountriesState } from "./types";
 import { Countries as CountriesService } from "../../services/userService";
@@ -14,7 +14,7 @@ describe("getUser saga", () => {
   it("should load next page", () => {
     testSaga(getUsersSaga, { type: GET_USERS, countries: countriesState })
       .next()
-      .select(getCurrentPage)
+      .select(getDisplayedPage)
       .next(1)
       .select(getLoadedPage)
       .next(1)
@@ -28,7 +28,7 @@ describe("getUser saga", () => {
   it("should not load next page", () => {
     testSaga(getUsersSaga, { type: GET_USERS, countries: countriesState })
       .next()
-      .select(getCurrentPage)
+      .select(getDisplayedPage)
       .next(1)
       .select(getLoadedPage)
       .next(2)
@@ -39,7 +39,7 @@ describe("getUser saga", () => {
   it("should catch error", () => {
     testSaga(getUsersSaga, { type: GET_USERS, countries: countriesState })
       .next()
-      .select(getCurrentPage)
+      .select(getDisplayedPage)
       .next(1)
       .select(getLoadedPage)
       .next(1)
@@ -53,7 +53,7 @@ describe("getUser saga", () => {
   it("should reset pages", () => {
     testSaga(getUsersSaga, { type: GET_USERS, countries: countriesState, reset: true })
       .next()
-      .select(getCurrentPage)
+      .select(getDisplayedPage)
       .next(3)
       .select(getLoadedPage)
       .next(3)

@@ -1,7 +1,7 @@
 import { countries } from "../../config";
 import { BookState } from "./types";
 import { ActionTypes, DISPLAY_PAGE } from "./actions";
-import { mapSettingsToState, appendUsersPage, getNextPage } from "./utils";
+import { mapSettingsToState, appendUsersPage, getNextDisplayedPage } from "./utils";
 import {
   GET_USERS,
   GET_USERS_SUCCESS,
@@ -14,7 +14,7 @@ export const initialState: BookState = {
   isFetching: false,
   isError: false,
   countries: mapSettingsToState(countries),
-  currentPage: 0
+  displayedPage: 0
 };
 
 export default (state = initialState, action: ActionTypes): BookState => {
@@ -41,9 +41,9 @@ export default (state = initialState, action: ActionTypes): BookState => {
     case DISPLAY_PAGE:
       return {
         ...state,
-        currentPage: getNextPage(
+        displayedPage: getNextDisplayedPage(
           state.users.length,
-          state.currentPage,
+          state.displayedPage,
           action.reset
         )
       };

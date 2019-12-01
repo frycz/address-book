@@ -14,7 +14,7 @@ export interface Props {
   isFetching: boolean;
   isError: boolean;
   countries: Countries;
-  currentPage: number;
+  displayedPage: number;
   getUsers: typeof getUsers;
   displayPage: typeof displayPage;
 }
@@ -30,7 +30,7 @@ export const AddressBook: React.FC<Props> = ({
   isFetching,
   isError,
   getUsers,
-  currentPage,
+  displayedPage,
   displayPage,
   countries
 }: Props) => {
@@ -81,18 +81,18 @@ export const AddressBook: React.FC<Props> = ({
       return "Catalogue unavailable";
     }
     // TODO: check this condition
-    if (!isFetching && currentPage >= maxPage) {
+    if (!isFetching && displayedPage >= maxPage) {
       return "End of user catalogue";
     }
 
-    if (!isFetching && users.length === 0 && currentPage > 0) {
+    if (!isFetching && users.length === 0 && displayedPage > 0) {
       return "No users found";
     }
     // TODO: check this condition
     if (
       !filter &&
       !isError &&
-      currentPage < maxPage &&
+      displayedPage < maxPage &&
       (users.length !== 0 || isFetching)
     ) {
       return "Loading...";
@@ -130,7 +130,7 @@ export const AddressBook: React.FC<Props> = ({
             </thead>
             <tbody>
               {users
-                .slice(0, Math.min(currentPage, maxPage))
+                .slice(0, Math.min(displayedPage, maxPage))
                 .reduce((list, page) => list.concat(page), [])
                 .filter(filterUsers)
                 .map((user, idx) => (
@@ -199,7 +199,7 @@ export default connect(
     isFetching: state.book.isFetching,
     isError: state.book.isError,
     countries: state.book.countries,
-    currentPage: state.book.currentPage
+    displayedPage: state.book.displayedPage
   }),
   { getUsers, displayPage }
 )(AddressBook);

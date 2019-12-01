@@ -21,16 +21,16 @@ export const appendUsersPage = (
   return reset ? [incomingUsers] : [...stateUsers, incomingUsers];
 };
 
-export const getNextPage = (
+export const getNextDisplayedPage = (
   loadedPage: number,
-  currentPage: number,
+  displayedPage: number,
   reset?: boolean
 ) => {
   if (reset) {
     return 1;
   }
 
-  return currentPage <= loadedPage ? currentPage + 1 : currentPage;
+  return displayedPage <= loadedPage ? displayedPage + 1 : displayedPage;
 };
 
 export const mapReduxToServiceCountries = (

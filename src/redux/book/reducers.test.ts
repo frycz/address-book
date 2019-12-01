@@ -63,37 +63,37 @@ describe("Address book reducer", () => {
 
   it("should respond to DISPLAY_PAGE action", () => {
     const state = reducer(
-      { ...initialState, users: mockUsers, currentPage: 2 },
+      { ...initialState, users: mockUsers, displayedPage: 2 },
       { type: DISPLAY_PAGE }
     );
     expect(state).toEqual({
       ...initialState,
       users: mockUsers,
-      currentPage: 3
+      displayedPage: 3
     });
   });
 
   it("should respond to DISPLAY_PAGE action with reset", () => {
     const state = reducer(
-      { ...initialState, users: mockUsers, currentPage: 2 },
+      { ...initialState, users: mockUsers, displayedPage: 2 },
       { type: DISPLAY_PAGE, reset: true }
     );
     expect(state).toEqual({
       ...initialState,
       users: mockUsers,
-      currentPage: 1
+      displayedPage: 1
     });
   });
 
   it("should respond to DISPLAY_PAGE action exceeding loaded pages", () => {
     const state = reducer(
-      { ...initialState, users: mockUsers, currentPage: 4 },
+      { ...initialState, users: mockUsers, displayedPage: 4 },
       { type: DISPLAY_PAGE }
     );
     expect(state).toEqual({
       ...initialState,
       users: mockUsers,
-      currentPage: 4
+      displayedPage: 4
     });
   });
 

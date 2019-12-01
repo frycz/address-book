@@ -9,7 +9,7 @@ const mockPropsDefault: Props = {
   isFetching: false,
   isError: false,
   countries: { ch: true, es: true, fr: false },
-  currentPage: 1,
+  displayedPage: 1,
   getUsers: jest.fn(),
   displayPage: jest.fn()
 };
@@ -17,13 +17,13 @@ const mockPropsDefault: Props = {
 describe("AddressBook", () => {
   const addressBookDefault = shallow(<AddressBook {...mockPropsDefault} />);
   const addressBookTwoPages = shallow(
-    <AddressBook {...{ ...mockPropsDefault, currentPage: 2 }} />
+    <AddressBook {...{ ...mockPropsDefault, displayedPage: 2 }} />
   );
   const addressBookMaxPage = shallow(
     <AddressBook {...{ ...mockPropsDefault, maxPage: 1 }} />
   );
   const addressBookAllPages = shallow(
-    <AddressBook {...{ ...mockPropsDefault, currentPage: 3, maxPage: 3 }} />
+    <AddressBook {...{ ...mockPropsDefault, displayedPage: 3, maxPage: 3 }} />
   );
   const addressBookFetching = shallow(
     <AddressBook {...{ ...mockPropsDefault, isFetching: true }} />
