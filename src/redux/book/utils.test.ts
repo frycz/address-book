@@ -24,6 +24,10 @@ describe("Redux utils", () => {
     expect(appendUsersPage(users, page)).toEqual([...users, page]);
   });
 
+  it("should not append empty page", () => {
+    expect(appendUsersPage(users, [])).toEqual(users);
+  });
+
   it("should reset users to page", () => {
     expect(appendUsersPage(users, page, true)).toEqual([page]);
   });

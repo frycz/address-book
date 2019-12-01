@@ -49,6 +49,12 @@ export function* getUsers(action: GetUsersAction): SagaIterator {
         type: GET_USERS_ERROR
       });
     }
+  } else {
+    yield put({
+      type: GET_USERS_SUCCESS,
+      users: [],
+      reset: action.reset
+    });
   }
 }
 

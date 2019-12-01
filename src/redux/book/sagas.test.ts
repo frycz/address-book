@@ -32,6 +32,8 @@ describe("getUser saga", () => {
       .next(1)
       .select(getLoadedPage)
       .next(2)
+      .put(getUsersSuccess([]))
+      .next()
       .finish()
       .isDone();
   });

@@ -80,7 +80,7 @@ export const AddressBook: React.FC<Props> = ({
     if (isError) {
       return "Catalogue unavailable";
     }
-    // TODO: check this condition
+
     if (!isFetching && displayedPage >= maxPage) {
       return "End of user catalogue";
     }
@@ -88,7 +88,7 @@ export const AddressBook: React.FC<Props> = ({
     if (!isFetching && users.length === 0 && displayedPage > 0) {
       return "No users found";
     }
-    // TODO: check this condition
+
     if (
       !filter &&
       !isError &&
