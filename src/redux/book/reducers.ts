@@ -1,7 +1,7 @@
-import { countries, Countries as CountriesSettings } from "../../config";
-import { BookState, Countries, User } from "./types";
+import { countries } from "../../config";
+import { BookState } from "./types";
 import { ActionTypes, DISPLAY_PAGE } from "./actions";
-
+import { mapSettingsToState, appendUsersPage, getNextPage } from "./utils";
 import {
   GET_USERS,
   GET_USERS_SUCCESS,
@@ -9,42 +9,12 @@ import {
   UPDATE_SETTINGS
 } from "./actions";
 
-const mapSettingsToState = (countries: CountriesSettings) => {
-  const stateCountries: Countries = {};
-  return countries.reduce((acc, country) => {
-    acc[country] = true;
-    return acc;
-  }, stateCountries);
-};
-
 export const initialState: BookState = {
   users: [],
   isFetching: false,
   isError: false,
   countries: mapSettingsToState(countries),
   currentPage: 0
-};
-
-const appendUsersPage = (
-  stateUsers: User[][],
-  incomingUsers: User[],
-  reset?: boolean
-) => {
-  if (!incomingUsers.length && !reset) {
-    return stateUsers;
-  }
-  return reset ? [incomingUsers] : [...stateUsers, incomingUsers];
-};
-const getNextPage = (
-  loadedPage: number,
-  currentPage: number,
-  reset?: boolean
-) => {
-  if (reset) {
-    return 1;
-  }
-
-  return currentPage <= loadedPage ? currentPage + 1 : currentPage;
 };
 
 export default (state = initialState, action: ActionTypes): BookState => {

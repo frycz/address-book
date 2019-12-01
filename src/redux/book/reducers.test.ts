@@ -6,12 +6,9 @@ import {
   DISPLAY_PAGE,
   UPDATE_SETTINGS
 } from "./actions";
-import { Countries } from "./types";
-// TODO: use objects instead of json
 import mockUsers from "../../../mocks/users";
 import mockPage from "../../../mocks/page";
-
-const countries: Countries = { ch: true, es: true, fr: false };
+import { countriesState as mockCountriesState } from "../../../mocks/countries";
 
 describe("Address book reducer", () => {
   it("should return initialstate", () => {
@@ -101,7 +98,10 @@ describe("Address book reducer", () => {
   });
 
   it("should respond to UPDATE_SETTINGS action", () => {
-    const state = reducer(undefined, { type: UPDATE_SETTINGS, countries });
-    expect(state).toEqual({ ...initialState, countries });
+    const state = reducer(undefined, {
+      type: UPDATE_SETTINGS,
+      countries: mockCountriesState
+    });
+    expect(state).toEqual({ ...initialState, countries: mockCountriesState });
   });
 });

@@ -1,17 +1,18 @@
 import { testSaga } from "redux-saga-test-plan";
 import { getUsers as getUsersService } from "../../services/userService";
-import { getUsers as getUsersSaga, getCurrentPage, getLoadedPage } from "./sagas";
+import { getUsers as getUsersSaga } from "./sagas";
+import { getCurrentPage, getLoadedPage } from './selectors';
 import { GET_USERS, getUsersSuccess, getUsersError } from "./actions";
-import { Countries as CountriesRedux } from "./types";
+import { Countries as CountriesState } from "./types";
 import { Countries as CountriesService } from "../../services/userService";
 import mockPage from '../../../mocks/page';
 
-const countriesRedux: CountriesRedux = { ch: true, es: true, fr: false };
+const countriesState: CountriesState = { ch: true, es: true, fr: false };
 const countriesService: CountriesService = ["ch", "es"];
 
 describe("getUser saga", () => {
   it("should load next page", () => {
-    testSaga(getUsersSaga, { type: GET_USERS, countries: countriesRedux })
+    testSaga(getUsersSaga, { type: GET_USERS, countries: countriesState })
       .next()
       .select(getCurrentPage)
       .next(1)
@@ -25,7 +26,7 @@ describe("getUser saga", () => {
   });
 
   it("should not load next page", () => {
-    testSaga(getUsersSaga, { type: GET_USERS, countries: countriesRedux })
+    testSaga(getUsersSaga, { type: GET_USERS, countries: countriesState })
       .next()
       .select(getCurrentPage)
       .next(1)
@@ -36,7 +37,7 @@ describe("getUser saga", () => {
   });
 
   it("should catch error", () => {
-    testSaga(getUsersSaga, { type: GET_USERS, countries: countriesRedux })
+    testSaga(getUsersSaga, { type: GET_USERS, countries: countriesState })
       .next()
       .select(getCurrentPage)
       .next(1)
@@ -50,7 +51,7 @@ describe("getUser saga", () => {
   });
 
   it("should reset pages", () => {
-    testSaga(getUsersSaga, { type: GET_USERS, countries: countriesRedux, reset: true })
+    testSaga(getUsersSaga, { type: GET_USERS, countries: countriesState, reset: true })
       .next()
       .select(getCurrentPage)
       .next(3)

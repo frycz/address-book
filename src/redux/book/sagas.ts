@@ -1,50 +1,15 @@
 import { SagaIterator } from "redux-saga";
 import { takeLeading, put, all, call, select } from "redux-saga/effects";
-import UserService, {
-  User,
-  Countries as ServiceCountries
-} from "../../services/userService";
+import UserService, { User } from "../../services/userService";
 import { batchSize, catalogueSize } from "../../config";
-import { State } from '../store';
 import { GetUsersAction } from "./actions";
-import { Countries as ReduxCountries } from "./types";
+import { getCurrentPage, getLoadedPage } from "./selectors";
+import {
+  mapReduxToServiceCountries,
+  getNextLoadedPage,
+  isNextLoadedPageValid
+} from "./utils";
 import { GET_USERS, GET_USERS_SUCCESS, GET_USERS_ERROR } from "./actions";
-// TODO: move to utils
-const mapReduxToServiceCountries = (
-  countries: ReduxCountries
-): ServiceCountries => {
-  const serviceCountries: string[] = [];
-  return Object.entries(countries).reduce((acc, [country, isSelected]) => {
-    isSelected && acc.push(country);
-    return acc;
-  }, serviceCountries);
-};
-
-const getNextLoadedPage = (
-  currentLoadedPage: number,
-  displayedPage: number,
-  reset?: boolean
-) => {
-  if (reset) {
-    return 1;
-  }
-
-  return currentLoadedPage <= displayedPage
-    ? currentLoadedPage + 1
-    : currentLoadedPage;
-};
-
-const isNextLoadedPageValid = (
-  nextLoadedPage: number,
-  currentLoadedPage: number,
-  maxPage: number
-) =>
-  (nextLoadedPage === 1 || nextLoadedPage === currentLoadedPage + 1) &&
-  nextLoadedPage <= maxPage;
-// move to selectors
-export const getCurrentPage = (state: State) => state.book.currentPage;
-
-export const getLoadedPage = (state: State) => state.book.users.length;
 
 export function* getUsers(action: GetUsersAction): SagaIterator {
   const serviceCountries = mapReduxToServiceCountries(action.countries);
