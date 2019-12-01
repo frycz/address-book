@@ -5,10 +5,11 @@ import UserService, {
   Countries as ServiceCountries
 } from "../../services/userService";
 import { batchSize, catalogueSize } from "../../config";
+import { State } from '../store';
 import { GetUsersAction } from "./actions";
 import { Countries as ReduxCountries } from "./types";
 import { GET_USERS, GET_USERS_SUCCESS, GET_USERS_ERROR } from "./actions";
-
+// TODO: move to utils
 const mapReduxToServiceCountries = (
   countries: ReduxCountries
 ): ServiceCountries => {
@@ -40,12 +41,16 @@ const isNextLoadedPageValid = (
 ) =>
   (nextLoadedPage === 1 || nextLoadedPage === currentLoadedPage + 1) &&
   nextLoadedPage <= maxPage;
+// move to selectors
+export const getCurrentPage = (state: State) => state.book.currentPage;
+
+export const getLoadedPage = (state: State) => state.book.users.length;
 
 export function* getUsers(action: GetUsersAction): SagaIterator {
   const serviceCountries = mapReduxToServiceCountries(action.countries);
 
-  const displayedPage = yield select(state => state.book.currentPage);
-  const currentLoadedPage = yield select(state => state.book.users.length);
+  const displayedPage = yield select(getCurrentPage);
+  const currentLoadedPage = yield select(getLoadedPage);
   const maxPage = catalogueSize / batchSize;
 
   const nextLoadedPage = getNextLoadedPage(

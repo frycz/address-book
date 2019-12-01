@@ -6,7 +6,8 @@ import {
   DISPLAY_PAGE,
   UPDATE_SETTINGS
 } from "./actions";
-import { Countries } from "./types";
+import { Countries, User } from "./types";
+// TODO: use objects instead of json
 import mockUsers from "../../../mocks/users.json";
 import mockPage from "../../../mocks/page.json";
 
@@ -30,7 +31,7 @@ describe("Address book reducer", () => {
 
   it("should respond to GET_USERS_SUCCESS action", () => {
     const state = reducer(
-      { ...initialState, users: mockUsers },
+      { ...initialState, users: mockUsers as User[][] },
       { type: GET_USERS_SUCCESS, users: mockPage, reset: false }
     );
     expect(state).toEqual({
@@ -43,7 +44,7 @@ describe("Address book reducer", () => {
 
   it("should respond to GET_USERS_SUCCESS action with reset", () => {
     const state = reducer(
-      { ...initialState, users: mockUsers },
+      { ...initialState, users: mockUsers as User[][] },
       { type: GET_USERS_SUCCESS, users: mockPage, reset: true }
     );
     expect(state).toEqual({
@@ -65,7 +66,7 @@ describe("Address book reducer", () => {
 
   it("should respond to DISPLAY_PAGE action", () => {
     const state = reducer(
-      { ...initialState, users: mockUsers, currentPage: 2 },
+      { ...initialState, users: mockUsers as User[][], currentPage: 2 },
       { type: DISPLAY_PAGE }
     );
     expect(state).toEqual({
@@ -77,7 +78,7 @@ describe("Address book reducer", () => {
 
   it("should respond to DISPLAY_PAGE action with reset", () => {
     const state = reducer(
-      { ...initialState, users: mockUsers, currentPage: 2 },
+      { ...initialState, users: mockUsers as User[][], currentPage: 2 },
       { type: DISPLAY_PAGE, reset: true }
     );
     expect(state).toEqual({
@@ -89,7 +90,7 @@ describe("Address book reducer", () => {
 
   it("should respond to DISPLAY_PAGE action exceeding loaded pages", () => {
     const state = reducer(
-      { ...initialState, users: mockUsers, currentPage: 4 },
+      { ...initialState, users: mockUsers as User[][], currentPage: 4 },
       { type: DISPLAY_PAGE }
     );
     expect(state).toEqual({

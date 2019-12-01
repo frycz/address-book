@@ -15,7 +15,7 @@ export interface GetUsersAction {
 export interface GetUsersSuccessAction {
   type: typeof GET_USERS_SUCCESS;
   users: User[];
-  reset: boolean;
+  reset?: boolean;
 }
 
 export interface GetUsersErrorAction {
@@ -50,7 +50,7 @@ export const getUsers = (
 
 export const getUsersSuccess = (
   users: GetUsersSuccessAction["users"],
-  reset: GetUsersSuccessAction["reset"]
+  reset?: GetUsersSuccessAction["reset"]
 ): GetUsersSuccessAction => ({
   type: GET_USERS_SUCCESS,
   users,

@@ -27,7 +27,7 @@ export const initialState: BookState = {
 const appendUsersPage = (
   stateUsers: User[][],
   incomingUsers: User[],
-  reset: boolean
+  reset?: boolean
 ) => {
   if (!incomingUsers.length && !reset) {
     return stateUsers;
