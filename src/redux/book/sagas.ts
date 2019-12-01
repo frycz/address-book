@@ -11,6 +11,12 @@ import {
 } from "./utils";
 import { GET_USERS, GET_USERS_SUCCESS, GET_USERS_ERROR } from "./actions";
 
+/**
+ * Saga responsible for calculating next page to fetch and deciding
+ * if api call should be performed.
+ * 
+ * @param action - getUsersAction
+ */
 export function* getUsers(action: GetUsersAction): SagaIterator {
   const serviceCountries = mapReduxToServiceCountries(action.countries);
 

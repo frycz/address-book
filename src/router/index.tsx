@@ -1,3 +1,8 @@
+/**
+ * Defines the {@link AppRouter} React router.
+ * @module
+ */
+
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { batchSize, catalogueSize } from "../config";
@@ -11,6 +16,10 @@ export const paths: { [key: string]: string } = {
   settings: "/settings"
 };
 
+/**
+ * Application main router.
+ * Uses lazy-loading.
+ */
 const AppRouter: React.FC = () => (
   <BrowserRouter>
     <Switch>

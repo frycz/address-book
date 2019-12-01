@@ -1,7 +1,7 @@
 import { countries } from "../../config";
 import { BookState } from "./types";
 import { ActionTypes, DISPLAY_PAGE } from "./actions";
-import { mapSettingsToState, appendUsersPage, getNextDisplayedPage } from "./utils";
+import { mapConfigToState, appendUsersPage, getNextDisplayedPage } from "./utils";
 import {
   GET_USERS,
   GET_USERS_SUCCESS,
@@ -13,10 +13,13 @@ export const initialState: BookState = {
   users: [],
   isFetching: false,
   isError: false,
-  countries: mapSettingsToState(countries),
+  countries: mapConfigToState(countries),
   displayedPage: 0
 };
 
+/**
+ * Book sub-application reducer
+ */
 export default (state = initialState, action: ActionTypes): BookState => {
   switch (action.type) {
     case GET_USERS:

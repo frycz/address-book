@@ -1,3 +1,8 @@
+/**
+ * Provides calls to APIs
+ * @module
+ */
+
 import axios from "axios";
 import { batchSize } from "../config";
 
@@ -60,11 +65,25 @@ export type Countries = string[];
 
 const host = "https://randomuser.me/api/";
 
+/**
+ * Generates url to get users from specified page and countries
+ * 
+ * @param countries - countries from config
+ * @param page - page url parameter
+ * @returns users url for page
+ */
 const getUserApiUrl = (countries: Countries, page: number) =>
   `${host}?page=${page}&results=${batchSize}&seed=sherpany&nat=${countries.join(
     ","
   )}&inc=picture,name,email,login,location,phone,cell`;
 
+/**
+ * Calls users api and returns a list of them
+ * 
+ * @param countries - countries from config
+ * @param page - page url parameter
+ * @returns users list
+ */
 export async function getUsers(
   countries: Countries,
   page: number

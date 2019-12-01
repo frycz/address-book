@@ -2,7 +2,13 @@ import { Countries as CountriesConfig } from "../../config";
 import { Countries as CountriesState, User } from "./types";
 import { Countries as CountriesService } from "../../services/userService";
 
-export const mapSettingsToState = (countries: CountriesConfig) => {
+/**
+ * Maps config to redux store
+ * 
+ * @param countries - countries configuration
+ * @returns countries to be saved in redux store
+ */
+export const mapConfigToState = (countries: CountriesConfig) => {
   const stateCountries: CountriesState = {};
   return countries.reduce((acc, country) => {
     acc[country] = true;
@@ -10,6 +16,15 @@ export const mapSettingsToState = (countries: CountriesConfig) => {
   }, stateCountries);
 };
 
+/**
+ * Appends new page to current users list.
+ * If `reset` is `true` - new page replaces current list,
+ * 
+ * @param stateUsers - current users list
+ * @param incomingUsers - new page
+ * @param reset - if `true` new page replaces current list
+ * @returns updated users list with new page
+ */
 export const appendUsersPage = (
   stateUsers: User[][],
   incomingUsers: User[],
@@ -21,6 +36,15 @@ export const appendUsersPage = (
   return reset ? [incomingUsers] : [...stateUsers, incomingUsers];
 };
 
+/**
+ * Generated number of next page to be displayed based on
+ * curent displayed and loaded pages.
+ * 
+ * @param loadedPage - number of last loaded page
+ * @param displayedPage - currently displayed page
+ * @param reset - if `true` returned page is `1`
+ * @returns page number to be displayed
+ */
 export const getNextDisplayedPage = (
   loadedPage: number,
   displayedPage: number,
@@ -33,6 +57,12 @@ export const getNextDisplayedPage = (
   return displayedPage <= loadedPage ? displayedPage + 1 : displayedPage;
 };
 
+/**
+ * Maps countries list from Redux store to api service
+ * 
+ * @param countries - countries from redux store
+ * @returns countries used in api service
+ */
 export const mapReduxToServiceCountries = (
   countries: CountriesState
 ): CountriesService => {
@@ -43,6 +73,14 @@ export const mapReduxToServiceCountries = (
   }, serviceCountries);
 };
 
+/**
+ * Returns number of next page to be fetched from api service
+ * 
+ * @param currentLoadedPage - number of last page fetched
+ * @param displayedPage - number of currently displayed page
+ * @param reset - if `true` next loaded page is `1`
+ * @returns number of page to be fetched from api
+ */
 export const getNextLoadedPage = (
   currentLoadedPage: number,
   displayedPage: number,
@@ -57,6 +95,15 @@ export const getNextLoadedPage = (
     : currentLoadedPage;
 };
 
+/**
+ * Checks if number of page to be loaded does not exeed catalogue size
+ * and follows current page.
+ * 
+ * @param nextLoadedPage 
+ * @param currentLoadedPage 
+ * @param maxPage - catalogue max size
+ * @returns `true` if page number is valid. `false` otherwise.
+ */
 export const isNextLoadedPageValid = (
   nextLoadedPage: number,
   currentLoadedPage: number,

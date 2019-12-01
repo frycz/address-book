@@ -1,3 +1,8 @@
+/**
+ * Defines the {@link Settings} React component.
+ * @module
+ */
+
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -8,12 +13,27 @@ import { updateSettings } from "../../redux/book/actions";
 
 import "./Settings.scss";
 
+/**
+ * Props interface for {@link Settings}.
+ */
 export interface Props {
   initialCountries: Countries;
   updateSettings: typeof updateSettings;
 }
 
+/**
+ * Main component for displaying address book
+ *
+ * @param {Props} props see {@link Props}
+ * @returns Settings component
+ */
 export const Settings: React.FC<Props> = ({ initialCountries, updateSettings }) => {
+
+  /**
+   * Countries checkbox value change event handler
+   * 
+   * @param e - html input change event
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     updateSettings({

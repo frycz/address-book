@@ -1,3 +1,8 @@
+/**
+ * Defines the {@link AddressBook} React component.
+ * @module
+ */
+
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -8,6 +13,9 @@ import { getUsers, displayPage } from "../../redux/book/actions";
 import { paths } from "../../router";
 import "./AddressBook.scss";
 
+/**
+ * Props interface for {@link AddressBook}.
+ */
 export interface Props {
   users: User[][];
   maxPage: number;
@@ -22,7 +30,8 @@ export interface Props {
 /**
  * Main component for displaying address book
  *
- * @param {Props} props
+ * @param {Props} props see {@link Props}
+ * @returns AddressBook component
  */
 export const AddressBook: React.FC<Props> = ({
   users,
@@ -53,29 +62,54 @@ export const AddressBook: React.FC<Props> = ({
     }
   }, 400);
 
+  /**
+   * Fetches the catalogue from the first page
+   */
   function refresh() {
     setFilter("");
     displayPage(true);
     getUsers(countries, true);
   }
 
+  /**
+   * Openes user details modal
+   */
   function openModal() {
     setIsOpen(true);
   }
 
+  /**
+   * Closes user details modal
+   */
   function closeModal() {
     setIsOpen(false);
   }
 
+  /**
+   * Catalogue row click event handler
+   * 
+   * @param user - user data from application state
+   */
   function handleRowClick(user: User) {
     setSelectedUser(user);
     openModal();
   }
 
+  /**
+   * Search field value change event handler
+   * 
+   * @param e - html input change event
+   */
   function handleFilterChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFilter(e.target.value);
   }
 
+  /**
+   * Filters users list based on user first and last name
+   * 
+   * @param user - user data from application state
+   * @returns filtered users list
+   */
   const filterUsers = (user: User) => {
     return (
       `${user.name.first.toLowerCase()} ${user.name.last.toLowerCase()}`.indexOf(
@@ -84,7 +118,10 @@ export const AddressBook: React.FC<Props> = ({
     );
   };
 
-  function displayMessage() {
+  /**
+   * @returns catalogue information message
+   */
+  function displayMessage(): string | undefined {
     if (isError) {
       return "Catalogue unavailable";
     }

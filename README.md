@@ -1,3 +1,9 @@
+# Address Book App
+
+This is a fictional address book app, where you can search for users addresses and
+personal information. The app displays a list of users for clients to browse and get
+personal information for a selected user.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Setup

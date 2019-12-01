@@ -1,5 +1,5 @@
 import {
-  mapSettingsToState,
+  mapConfigToState,
   appendUsersPage,
   getNextDisplayedPage,
   mapReduxToServiceCountries,
@@ -17,7 +17,7 @@ import {
 
 describe("Redux utils", () => {
   it("should map config countries to state countries", () => {
-    expect(mapSettingsToState(countriesConfig)).toEqual(countriesStateInit);
+    expect(mapConfigToState(countriesConfig)).toEqual(countriesStateInit);
   });
 
   it("should append page to users", () => {
