@@ -4,7 +4,7 @@ import { getUsers as getUsersSaga, getCurrentPage, getLoadedPage } from "./sagas
 import { GET_USERS, getUsersSuccess, getUsersError } from "./actions";
 import { Countries as CountriesRedux } from "./types";
 import { Countries as CountriesService } from "../../services/userService";
-import page from '../../../mocks/page.json';
+import mockPage from '../../../mocks/page';
 
 const countriesRedux: CountriesRedux = { ch: true, es: true, fr: false };
 const countriesService: CountriesService = ["ch", "es"];
@@ -18,8 +18,8 @@ describe("getUser saga", () => {
       .select(getLoadedPage)
       .next(1)
       .call(getUsersService, countriesService, 2)
-      .next(page)
-      .put(getUsersSuccess(page))
+      .next(mockPage)
+      .put(getUsersSuccess(mockPage))
       .finish()
       .isDone();
   });
@@ -59,8 +59,8 @@ describe("getUser saga", () => {
       .put(getUsersSuccess([], true))
       .next()
       .call(getUsersService, countriesService, 1)
-      .next(page)
-      .put(getUsersSuccess(page, true))
+      .next(mockPage)
+      .put(getUsersSuccess(mockPage, true))
       .finish()
       .isDone();
   });

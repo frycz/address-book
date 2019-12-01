@@ -10,10 +10,11 @@ import {
 } from "./actions";
 
 const mapSettingsToState = (countries: CountriesSettings) => {
+  const stateCountries: Countries = {};
   return countries.reduce((acc, country) => {
     acc[country] = true;
     return acc;
-  }, {} as Countries);
+  }, stateCountries);
 };
 
 export const initialState: BookState = {

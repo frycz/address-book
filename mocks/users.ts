@@ -1,4 +1,6 @@
-[
+import { User } from '../src/redux/store'
+
+const users: User[][] = [
   [
     {
       "name": {
@@ -216,3 +218,5 @@
     }
   ]
 ]
+
+export default users;

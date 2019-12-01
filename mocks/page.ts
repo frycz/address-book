@@ -1,4 +1,6 @@
-[
+import { User } from '../src/redux/store'
+
+const page: User[] = [
   {
     "name": {
       "title": "Monsieur",
@@ -84,3 +86,5 @@
     }
   }
 ]
+
+export default page;

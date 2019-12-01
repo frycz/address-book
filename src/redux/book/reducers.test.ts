@@ -6,10 +6,10 @@ import {
   DISPLAY_PAGE,
   UPDATE_SETTINGS
 } from "./actions";
-import { Countries, User } from "./types";
+import { Countries } from "./types";
 // TODO: use objects instead of json
-import mockUsers from "../../../mocks/users.json";
-import mockPage from "../../../mocks/page.json";
+import mockUsers from "../../../mocks/users";
+import mockPage from "../../../mocks/page";
 
 const countries: Countries = { ch: true, es: true, fr: false };
 
@@ -31,7 +31,7 @@ describe("Address book reducer", () => {
 
   it("should respond to GET_USERS_SUCCESS action", () => {
     const state = reducer(
-      { ...initialState, users: mockUsers as User[][] },
+      { ...initialState, users: mockUsers },
       { type: GET_USERS_SUCCESS, users: mockPage, reset: false }
     );
     expect(state).toEqual({
@@ -44,7 +44,7 @@ describe("Address book reducer", () => {
 
   it("should respond to GET_USERS_SUCCESS action with reset", () => {
     const state = reducer(
-      { ...initialState, users: mockUsers as User[][] },
+      { ...initialState, users: mockUsers },
       { type: GET_USERS_SUCCESS, users: mockPage, reset: true }
     );
     expect(state).toEqual({
@@ -66,7 +66,7 @@ describe("Address book reducer", () => {
 
   it("should respond to DISPLAY_PAGE action", () => {
     const state = reducer(
-      { ...initialState, users: mockUsers as User[][], currentPage: 2 },
+      { ...initialState, users: mockUsers, currentPage: 2 },
       { type: DISPLAY_PAGE }
     );
     expect(state).toEqual({
@@ -78,7 +78,7 @@ describe("Address book reducer", () => {
 
   it("should respond to DISPLAY_PAGE action with reset", () => {
     const state = reducer(
-      { ...initialState, users: mockUsers as User[][], currentPage: 2 },
+      { ...initialState, users: mockUsers, currentPage: 2 },
       { type: DISPLAY_PAGE, reset: true }
     );
     expect(state).toEqual({
@@ -90,7 +90,7 @@ describe("Address book reducer", () => {
 
   it("should respond to DISPLAY_PAGE action exceeding loaded pages", () => {
     const state = reducer(
-      { ...initialState, users: mockUsers as User[][], currentPage: 4 },
+      { ...initialState, users: mockUsers, currentPage: 4 },
       { type: DISPLAY_PAGE }
     );
     expect(state).toEqual({

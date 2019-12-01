@@ -1,10 +1,10 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { AddressBook, Props } from "./AddressBook";
-import mockUsers from "../../../mocks/users.json";
+import mockUsers from "../../../mocks/users";
 
 const mockPropsDefault: Props = {
-  users: mockUsers as Props["users"],
+  users: mockUsers,
   maxPage: 20,
   isFetching: false,
   isError: false,

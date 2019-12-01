@@ -30,8 +30,7 @@
     "build": "react-scripts build",
     "test": "CI=true react-scripts test --env=jsdom",
     "test:watch": "react-scripts test",
-    "test:update": "react-scripts test -u",
-    "eject": "react-scripts eject"
+    "test:update": "react-scripts test -u"
   },
   "eslintConfig": {
     "extends": "react-app"
