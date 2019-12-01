@@ -21,8 +21,8 @@ export interface Props {
 
 /**
  * Main component for displaying address book
- * 
- * @param {Props} props 
+ *
+ * @param {Props} props
  */
 export const AddressBook: React.FC<Props> = ({
   users,
@@ -39,8 +39,7 @@ export const AddressBook: React.FC<Props> = ({
   const [filter, setFilter] = React.useState("");
 
   useEffect(() => {
-    displayPage(true);
-    getUsers(countries, true);
+    refresh();
   }, [countries]);
 
   useEffect(() => {
@@ -48,11 +47,17 @@ export const AddressBook: React.FC<Props> = ({
   }, [users]);
 
   useBottomScrollListener(() => {
-    if (!filter) {
+    if (!isError && !filter) {
       displayPage();
       getUsers(countries);
     }
   }, 400);
+
+  function refresh() {
+    setFilter("");
+    displayPage(true);
+    getUsers(countries, true);
+  }
 
   function openModal() {
     setIsOpen(true);
@@ -72,9 +77,12 @@ export const AddressBook: React.FC<Props> = ({
   }
 
   const filterUsers = (user: User) => {
-    return `${user.name.first.toLowerCase()} ${user.name.last.toLowerCase()}`.indexOf(
-      filter.toLowerCase()
-    ) === 0;}
+    return (
+      `${user.name.first.toLowerCase()} ${user.name.last.toLowerCase()}`.indexOf(
+        filter.toLowerCase()
+      ) === 0
+    );
+  };
 
   function displayMessage() {
     if (isError) {
@@ -153,8 +161,14 @@ export const AddressBook: React.FC<Props> = ({
           </table>
         ) : null}
       </div>
-      <div className="address-book__message">{displayMessage()}</div>
-      {/* TODO: add refresh button */}
+      <div className="address-book__message">
+        {displayMessage()}
+        {isError ? (
+          <div>
+            <button onClick={refresh}>{"Refresh"}</button>
+          </div>
+        ) : null}
+      </div>
       <Modal
         className="address-book__details-modal"
         isOpen={modalIsOpen}
